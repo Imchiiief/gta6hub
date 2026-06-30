@@ -1,0 +1,96 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">Leonida<span class="footer-brand-accent">Hub</span></span>
+      <p class="footer-copy">
+        Fan-made. Not affiliated with Rockstar Games or Take-Two Interactive.
+      </p>
+    </div>
+    <nav aria-label="Footer navigation" class="footer-nav">
+      <a href="/news">News</a>
+      <a href="/tracker">Tracker</a>
+      <a href="/videos">Videos</a>
+      <a href="/deals">Deals</a>
+    </nav>
+    <p class="footer-year">&copy; {year} Leonida Hub</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-subtle);
+    padding: 32px 24px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-brand-accent {
+    color: var(--neon);
+    margin-left: 4px;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    max-width: 300px;
+  }
+
+  .footer-left {
+    flex: 1;
+  }
+
+  .footer-nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-nav a {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-nav a:hover {
+    color: var(--neon);
+  }
+
+  .footer-year {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: "JetBrains Mono", monospace;
+    margin-left: auto;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .footer-year {
+      margin-left: 0;
+    }
+  }
+</style>

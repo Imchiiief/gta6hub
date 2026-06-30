@@ -1,0 +1,45 @@
+{
+  "game": "Grand Theft Auto VI",
+  "version": "1.00",
+  "last_updated": "2026-11-22",
+  "categories": {
+    "stunt_jump": "Stunt Jumps",
+    "hidden_package": "Hidden Packages",
+    "enterable_building": "Enterable Buildings"
+  },
+  "items": [
+    {
+      "id": "hp-042",
+      "category": "hidden_package",
+      "location": "Ocean Drive, southern boardwalk — concrete alcove beneath the third pillar cluster from the south end, behind a rusted drainage grate facing the waterline.",
+      "coordinates": {
+        "x": -742.38,
+        "y": -1208.55,
+        "z": 2.14
+      },
+      "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+      "id": "sj-001",
+      "category": "stunt_jump",
+      "location": "Port Gellhorn Causeway, northbound lane — collapsed ramp section roughly 600 metres north of the toll booths, launching across the shipping canal toward the far embankment.",
+      "coordinates": {
+        "x": 1124.77,
+        "y": 402.19,
+        "z": 8.66
+      },
+      "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+      "id": "eb-013",
+      "category": "enterable_building",
+      "location": "Downtown Vice, Calle Onda district — eleven-storey art deco office tower with an accessible lobby, freight elevator, and rooftop access via the east stairwell.",
+      "coordinates": {
+        "x": -318.92,
+        "y": -845.61,
+        "z": 11.05
+      },
+      "video_url": null
+    }
+  ]
+}

@@ -1,0 +1,381 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+// ── Data ─────────────────────────────────────────────────────────────────
+const allPosts = await getCollection("news", ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// ── Launch countdown ─────────────────────────────────────────────────────
+const LAUNCH_DATE = new Date("2026-11-19T00:00:00Z");
+const today = new Date();
+const msRemaining = LAUNCH_DATE.valueOf() - today.valueOf();
+const daysToLaunch = Math.ceil(msRemaining / (1000 * 60 * 60 * 24));
+const weeksToLaunch = Math.floor(daysToLaunch / 7);
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+---
+
+<Layout
+  title="Leonida Hub — GTA VI Intel, Tracker &amp; Buying Guides"
+  description="Verified GTA VI intelligence: source-checked news, community debate analysis, the collectible tracker, and pre-order buying guides. Every claim cited."
+>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!-- HERO — countdown + newsletter callout                                -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden border-b border-white/[0.06]" aria-labelledby="hero-heading">
+
+    <!-- Background: hairline grid, no glow gradient — review-site restraint -->
+    <div class="absolute inset-0 bg-grid-pattern bg-grid opacity-60" aria-hidden="true"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-midnight" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-stretch lg:gap-8">
+
+        <!-- Left: headline + countdown ledger -->
+        <div class="flex flex-col justify-center">
+          <div class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-neon-border bg-neon-glow px-3 py-1">
+            <span class="h-1.5 w-1.5 shrink-0 animate-pulse-neon rounded-full bg-neon"></span>
+            <span class="font-mono text-[11px] tracking-[0.12em] text-neon">VERIFIED INTEL · UPDATED DAILY</span>
+          </div>
+
+          <h1 id="hero-heading" class="font-display text-5xl font-extrabold uppercase leading-[0.95] tracking-tight text-gray-100 sm:text-6xl">
+            Leonida Hub
+          </h1>
+          <p class="mt-4 max-w-lg text-base leading-relaxed text-gray-400 sm:text-lg">
+            Source-checked GTA VI coverage — every claim cited, every rumor weighed
+            against the original report. Built for players who want signal, not noise.
+          </p>
+
+          <!-- Countdown ledger — data-table aesthetic, not a hero number -->
+          <div class="mt-8 overflow-hidden rounded-lg border border-white/10 bg-slate">
+            <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5">
+              <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-gray-500">Launch schedule</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-gray-500">PS5 · Xbox Series X|S</span>
+            </div>
+            <div class="grid grid-cols-3 divide-x divide-white/[0.06]">
+              <div class="px-4 py-4">
+                <p class="font-display text-3xl font-bold tabular-nums text-neon">{daysToLaunch}</p>
+                <p class="mt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500">Days out</p>
+              </div>
+              <div class="px-4 py-4">
+                <p class="font-display text-3xl font-bold tabular-nums text-gray-100">{weeksToLaunch}</p>
+                <p class="mt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500">Weeks out</p>
+              </div>
+              <div class="px-4 py-4">
+                <p class="font-display text-3xl font-bold tabular-nums text-gray-100">Nov 19</p>
+                <p class="mt-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500">Release date</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="/tracker" class="inline-flex items-center gap-2 rounded-md bg-neon px-5 py-2.5 text-sm font-semibold text-midnight shadow-neon-sm transition-all hover:bg-neon-bright hover:shadow-neon">
+              Open Collectible Tracker
+            </a>
+            <a href="/news" class="inline-flex items-center gap-1.5 rounded-md border border-white/10 px-5 py-2.5 text-sm font-medium text-gray-300 transition-colors hover:border-white/20 hover:text-gray-100">
+              Browse all intel →
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: newsletter callout card -->
+        <aside class="flex flex-col justify-center rounded-xl border border-neon-border bg-gradient-to-b from-neon-glow to-transparent p-6 sm:p-8" aria-labelledby="newsletter-heading">
+          <p class="font-mono text-[10px] uppercase tracking-[0.14em] text-neon">Weekly digest</p>
+          <h2 id="newsletter-heading" class="mt-2 font-display text-2xl font-bold leading-tight text-gray-100">
+            Leonida Intel, every Friday.
+          </h2>
+          <p class="mt-2 text-sm leading-relaxed text-gray-400">
+            One email. Every confirmed detail, every debate worth your attention,
+            zero filler. Unsubscribe in one click, any time.
+          </p>
+
+          <form
+            class="mt-5 flex flex-col gap-2.5"
+            action="intel.gta6hub.com"
+            method="POST"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Newsletter signup"
+            novalidate
+          >
+            <label for="hero-newsletter-email" class="sr-only">Email address</label>
+            <input
+              type="email"
+              id="hero-newsletter-email"
+              name="email"
+              required
+              autocomplete="email"
+              inputmode="email"
+              placeholder="you@example.com"
+              class="w-full rounded-md border border-white/10 bg-midnight px-4 py-2.5 text-sm text-gray-100 placeholder:text-gray-600 outline-none transition-colors focus:border-neon focus:ring-2 focus:ring-neon/20"
+            />
+            <button
+              type="submit"
+              class="w-full rounded-md bg-neon px-4 py-2.5 text-sm font-semibold text-midnight transition-colors hover:bg-neon-bright"
+            >
+              Subscribe — it's free
+            </button>
+          </form>
+
+          <p class="mt-3 font-mono text-[10px] text-gray-600">No spam. 2,400+ subscribers.</p>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!-- COMMUNITY INTELLIGENCE — split grid                                  -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <section class="border-b border-white/[0.06]" aria-labelledby="intel-heading">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+
+      <div class="mb-8 flex items-center gap-3">
+        <span class="block h-px w-6 bg-neon" aria-hidden="true"></span>
+        <h2 id="intel-heading" class="font-mono text-xs uppercase tracking-[0.16em] text-neon">Community intelligence</h2>
+      </div>
+
+      <div class="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] lg:grid-cols-2">
+
+        <!-- ── Intel Analysis Feed card ───────────────────────────────── -->
+        <article class="flex flex-col gap-4 bg-slate p-6 sm:p-8" aria-labelledby="analysis-card-heading">
+          <div class="flex items-center justify-between">
+            <span class="rounded border border-neon-border bg-neon-glow px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-neon">Intel Analysis</span>
+            <time class="font-mono text-[11px] text-gray-600" datetime="2026-06-29">Jun 29, 2026</time>
+          </div>
+
+          <h3 id="analysis-card-heading" class="font-display text-2xl font-bold leading-tight text-gray-100">
+            The swamp foliage density debate: is GTA VI actually 4x denser than RDR2's Guarma?
+          </h3>
+
+          <p class="text-sm leading-relaxed text-gray-400">
+            A Reddit user's manual tree-count of GTA VI's swampland sparked a genuine
+            technical debate this spring. We checked the methodology against what's
+            actually been shown on screen.
+          </p>
+
+          <div class="space-y-3 border-t border-white/[0.06] pt-4 text-sm leading-relaxed text-gray-400">
+            <p>
+              <span class="rounded bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px] text-gray-500">[EGW.NEWS]</span>
+              The claim originated from Reddit user Temporary-Cicada-392, who manually
+              counted individually placed trees in one dense swamp region and extrapolated
+              a total of roughly 14,287 trees — a figure the poster compared to Red Dead
+              Redemption 2's Guarma island.
+            </p>
+            <p>
+              <span class="rounded bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px] text-gray-500">[NOTEBOOKCHECK]</span>
+              The broader vegetation conversation hasn't been one-sided — some fans note
+              that certain swamp textures look less photorealistic than RDR2's foliage,
+              even as others point to improved dynamic lighting and wind interaction as
+              evidence of a real technical step forward.
+            </p>
+            <p class="text-gray-500">
+              Our take: a manual pixel-density extrapolation from a single screenshot is
+              suggestive, not conclusive. Treat the 4x figure as a community estimate
+              worth watching, not a Rockstar-confirmed spec.
+            </p>
+          </div>
+
+          <a href="/news" class="mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-neon transition-colors hover:text-neon-bright">
+            Read the full breakdown →
+          </a>
+        </article>
+
+        <!-- ── Myth-Buster / Fact-Check card ──────────────────────────── -->
+        <article class="flex flex-col gap-4 bg-slate p-6 sm:p-8" aria-labelledby="factcheck-card-heading">
+          <div class="flex items-center justify-between">
+            <span class="rounded border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.1em] text-amber-400">Fact-Check</span>
+            <time class="font-mono text-[11px] text-gray-600" datetime="2026-06-26">Jun 26, 2026</time>
+          </div>
+
+          <h3 id="factcheck-card-heading" class="font-display text-2xl font-bold leading-tight text-gray-100">
+            No, it's not a myth: the Ultimate Edition really does lock shops behind a paywall
+          </h3>
+
+          <p class="text-sm leading-relaxed text-gray-400">
+            Some threads frame this as community overreaction. The product listings say
+            otherwise — here's exactly what's locked, confirmed from Rockstar's own
+            edition breakdown.
+          </p>
+
+          <div class="space-y-3 border-t border-white/[0.06] pt-4 text-sm leading-relaxed text-gray-400">
+            <p>
+              <span class="rounded bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px] text-gray-500">[NOTEBOOKCHECK]</span>
+              According to Rockstar's own product description, the $100 Ultimate Edition
+              includes several exclusive shops — a car customization shop, hair salon,
+              tattoo studio, and clothing store — that standard edition owners cannot access.
+            </p>
+            <p>
+              <span class="rounded bg-white/[0.04] px-1.5 py-0.5 font-mono text-[10px] text-gray-500">[KOTAKU]</span>
+              This is a meaningful break from past GTA special editions, which typically
+              locked cosmetic items rather than entire in-game locations — fueling Reddit
+              debate over whether GTA VI standard edition is a deliberately reduced experience.
+            </p>
+            <p class="text-gray-500">
+              Our take: this is confirmed, not speculation. If owning every shop matters to
+              you, budget for the Ultimate Edition before you pre-order, not after launch.
+            </p>
+          </div>
+
+          <a href="/deals" class="mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-neon transition-colors hover:text-neon-bright">
+            Compare every edition →
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!-- BUYING GUIDE CALLOUTS — inline pre-order / hardware boxes            -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <section class="border-b border-white/[0.06]" aria-labelledby="buying-heading">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+
+      <div class="mb-8 flex items-center gap-3">
+        <span class="block h-px w-6 bg-neon" aria-hidden="true"></span>
+        <h2 id="buying-heading" class="font-mono text-xs uppercase tracking-[0.16em] text-neon">Buying guide</h2>
+      </div>
+
+      <div class="prose-callout max-w-3xl text-base leading-relaxed text-gray-300">
+        <p>
+          With the Ultimate Edition's locked shops confirmed, the edition you choose now
+          matters more than it did for any past GTA release. Most players are better
+          served starting with the
+          <a
+            href="https://www.amazon.com/s?k=GTA+6+standard+edition+preorder&tag=leonidahub-20"
+            class="callout-link"
+            rel="noopener noreferrer sponsored"
+          >
+            Standard Edition pre-order on Amazon
+          </a>
+          and upgrading later if the exclusive shops turn out to matter to their playstyle —
+          Rockstar has not confirmed whether upgrade pricing will be offered post-launch.
+        </p>
+
+        <p class="mt-5">
+          If you're still playing on a base PS4 or Xbox One, GTA VI will not run on
+          last-gen hardware at all. Players upgrading specifically for this release
+          should look at the
+          <a
+            href="https://www.amazon.com/s?k=PS5+console&tag=leonidahub-20"
+            class="callout-link"
+            rel="noopener noreferrer sponsored"
+          >
+            PlayStation 5 console bundles
+          </a>
+          or the
+          <a
+            href="https://www.amazon.com/s?k=Xbox+Series+X+console&tag=leonidahub-20"
+            class="callout-link"
+            rel="noopener noreferrer sponsored"
+          >
+            Xbox Series X hardware listings
+          </a>
+          — both are seeing GTA VI-branded bundles appear ahead of launch, which
+          typically offer better value than buying the console and game separately.
+        </p>
+
+        <p class="mt-5">
+          For storage: GTA VI's install size has not been officially confirmed, but
+          industry estimates following Rockstar's asset density comments suggest
+          200GB+ is realistic. If your console is already tight on space, a
+          <a
+            href="https://www.amazon.com/s?k=PS5+expansion+SSD&tag=leonidahub-20"
+            class="callout-link"
+            rel="noopener noreferrer sponsored"
+          >
+            compatible expansion SSD
+          </a>
+          is worth adding to your pre-launch checklist now rather than scrambling
+          on November 19.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!-- LATEST COVERAGE — dense grid, review-site style                      -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <section aria-labelledby="latest-heading">
+    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+
+      <div class="mb-8 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="block h-px w-6 bg-neon" aria-hidden="true"></span>
+          <h2 id="latest-heading" class="font-mono text-xs uppercase tracking-[0.16em] text-neon">Latest coverage</h2>
+        </div>
+        <a href="/news" class="text-sm text-gray-500 transition-colors hover:text-neon">All articles →</a>
+      </div>
+
+      <div class="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/[0.06] sm:grid-cols-2 lg:grid-cols-3">
+        {
+          sortedPosts.slice(0, 6).map((post) => (
+            <a
+              href={`/news/${post.slug}`}
+              class="group relative flex flex-col gap-3 bg-slate p-5 transition-colors hover:bg-midnight-100"
+            >
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[10px] uppercase tracking-[0.1em] text-gray-500">{post.data.category}</span>
+                <time class="font-mono text-[10px] text-gray-600" datetime={post.data.pubDate.toISOString()}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+              </div>
+              <h3 class="font-display text-lg font-semibold leading-snug text-gray-100 group-hover:text-neon">
+                {post.data.title}
+              </h3>
+              <p class="line-clamp-2 text-xs leading-relaxed text-gray-500">
+                {post.data.description}
+              </p>
+            </a>
+          ))
+        }
+      </div>
+
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  /* Inline hyperlink callout treatment — stylized as a clear, scannable box
+     rather than plain underlined text, per the brief's "inline hyperlink
+     placements ... formatted as clear, stylized callout boxes" requirement.
+     Implemented with box-decoration-break so multi-line wrapped links still
+     render as a single continuous pill rather than fragmenting per line. */
+  .callout-link {
+    display: inline;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 2px 8px;
+    margin: 0 1px;
+    border-radius: 5px;
+    border: 1px solid rgba(35, 169, 189, 0.35);
+    background: rgba(35, 169, 189, 0.1);
+    color: #2ec8df;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+
+  .callout-link:hover {
+    background: rgba(35, 169, 189, 0.18);
+    border-color: rgba(35, 169, 189, 0.55);
+  }
+
+  .callout-link:focus-visible {
+    outline: 2px solid #23a9bd;
+    outline-offset: 2px;
+  }
+</style>

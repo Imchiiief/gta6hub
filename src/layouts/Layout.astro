@@ -1,0 +1,291 @@
+---
+// =============================================================================
+// Leonida Hub — Foundational Layout
+// src/layouts/Layout.astro
+//
+// Self-contained layout module: HTML shell, header with responsive nav,
+// footer with a permanent affiliate disclosure block. Styled entirely with
+// Tailwind utility classes against the project's dark-mode token set
+// (bg-midnight / text-gray-100 / bg-neon accents) rather than scoped <style>
+// blocks, so every visual rule lives in markup and is purged correctly by
+// Tailwind's content scanner.
+// =============================================================================
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Leonida Hub — GTA VI news, collectible tracker, guides, and deals.",
+} = Astro.props;
+
+const siteName = "Leonida Hub";
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+
+const navLinks: { href: string; label: string }[] = [
+  { href: "/news", label: "News" },
+  { href: "/videos", label: "Videos" },
+  { href: "/deals", label: "Deals" },
+];
+
+const currentPath = Astro.url.pathname;
+const currentYear = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#010310" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-midnight text-gray-100 font-body antialiased min-h-dvh flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:rounded-md focus:bg-neon focus:px-4 focus:py-2 focus:text-midnight focus:text-sm focus:font-semibold"
+    >
+      Skip to main content
+    </a>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- HEADER                                                            -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <header
+      class="sticky top-0 z-50 w-full border-b border-white/[0.06] bg-midnight/85 backdrop-blur-md"
+      role="banner"
+    >
+      <div class="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
+
+        <!-- Wordmark -->
+        <a
+          href="/"
+          class="flex shrink-0 items-baseline gap-2 font-display text-xl font-extrabold tracking-tight text-gray-100"
+          aria-label="Leonida Hub — home"
+        >
+          <span class="text-neon">L</span><span>eonida</span>
+          <span class="hidden text-xs font-bold tracking-[0.18em] text-neon sm:inline">HUB</span>
+        </a>
+
+        <!-- Desktop nav -->
+        <nav aria-label="Primary navigation" class="hidden flex-1 md:block">
+          <ul class="flex items-center gap-1" role="list">
+            {
+              navLinks.map(({ href, label }) => {
+                const isActive = currentPath.startsWith(href);
+                return (
+                  <li>
+                    <a
+                      href={href}
+                      class:list={[
+                        "rounded-md px-3 py-1.5 text-sm font-medium tracking-wide transition-colors",
+                        isActive
+                          ? "text-neon hover:bg-neon/10"
+                          : "text-gray-400 hover:bg-white/[0.04] hover:text-gray-100",
+                      ]}
+                      aria-current={isActive ? "page" : undefined}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </nav>
+
+        <!-- High-contrast tracker CTA — always visible, every breakpoint -->
+        <a
+          href="/tracker"
+          class="ml-auto inline-flex shrink-0 items-center gap-2 rounded-md bg-neon px-4 py-2 text-sm font-semibold text-midnight shadow-neon-sm transition-all hover:bg-neon-bright hover:shadow-neon active:translate-y-px md:ml-0"
+          aria-label="Open the GTA VI collectible tracker"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+            class="shrink-0"
+          >
+            <path
+              d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Z"
+              fill="currentColor"
+            />
+            <path
+              d="M8 4.5a.75.75 0 0 1 .75.75v3.19l1.53 1.53a.75.75 0 1 1-1.06 1.06l-1.75-1.75A.75.75 0 0 1 7.25 9V5.25A.75.75 0 0 1 8 4.5Z"
+              fill="currentColor"
+            />
+          </svg>
+          <span class="hidden sm:inline">Open Tracker</span>
+          <span class="sm:hidden">Tracker</span>
+        </a>
+
+        <!-- Mobile nav toggle -->
+        <button
+          type="button"
+          id="nav-toggle"
+          class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/10 text-gray-300 transition-colors hover:bg-white/[0.04] md:hidden"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          aria-label="Toggle navigation menu"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path
+              d="M2 5h14M2 9h14M2 13h14"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile nav panel -->
+      <nav
+        id="mobile-nav"
+        aria-label="Mobile navigation"
+        class="hidden border-t border-white/[0.06] bg-midnight md:hidden"
+      >
+        <ul class="flex flex-col gap-1 px-4 py-3" role="list">
+          {
+            navLinks.map(({ href, label }) => {
+              const isActive = currentPath.startsWith(href);
+              return (
+                <li>
+                  <a
+                    href={href}
+                    class:list={[
+                      "block rounded-md px-3 py-2 text-sm font-medium",
+                      isActive
+                        ? "bg-neon/10 text-neon"
+                        : "text-gray-300 hover:bg-white/[0.04] hover:text-gray-100",
+                    ]}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {label}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+    </header>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- MAIN                                                              -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- FOOTER                                                            -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <footer role="contentinfo" class="border-t border-white/[0.06]">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+
+        <div class="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+
+          <div class="max-w-sm">
+            <span class="font-display text-base font-extrabold tracking-tight text-gray-100">
+              Leonida<span class="ml-1 text-neon">Hub</span>
+            </span>
+            <p class="mt-2 text-xs leading-relaxed text-gray-500">
+              Fan-made. Not affiliated with, endorsed by, or sponsored by
+              Rockstar Games or Take-Two Interactive.
+            </p>
+          </div>
+
+          <nav aria-label="Footer navigation" class="flex gap-6">
+            <a href="/news" class="text-sm text-gray-500 transition-colors hover:text-neon">News</a>
+            <a href="/tracker" class="text-sm text-gray-500 transition-colors hover:text-neon">Tracker</a>
+            <a href="/videos" class="text-sm text-gray-500 transition-colors hover:text-neon">Videos</a>
+            <a href="/deals" class="text-sm text-gray-500 transition-colors hover:text-neon">Deals</a>
+          </nav>
+
+        </div>
+
+        <!-- ── Permanent affiliate disclosure block ──────────────────────
+             FTC-compliant disclosure. This block is intentionally always
+             rendered in the footer of every page that uses this layout —
+             do not conditionally hide it, even on pages without active
+             affiliate links, since deals/news pages may add links later
+             without a corresponding layout change. -->
+        <div
+          class="mt-8 rounded-md border border-white/[0.06] bg-slate px-4 py-3"
+          aria-label="Affiliate disclosure"
+        >
+          <p class="text-[11px] leading-relaxed text-gray-500">
+            <strong class="font-semibold text-gray-400">Affiliate disclosure:</strong>
+            Leonida Hub may earn a commission from qualifying purchases made
+            through links on this site, at no additional cost to you. This
+            includes the Amazon Associates program and other affiliate
+            partnerships. We only link to products and editions we'd
+            recommend regardless of compensation.
+          </p>
+        </div>
+
+        <p class="mt-6 font-mono text-[11px] text-gray-600">
+          &copy; {currentYear} Leonida Hub
+        </p>
+
+      </div>
+    </footer>
+
+    <script>
+      // Mobile nav toggle — vanilla, no framework runtime required.
+      const toggle = document.getElementById("nav-toggle");
+      const panel = document.getElementById("mobile-nav");
+
+      if (toggle && panel) {
+        toggle.addEventListener("click", () => {
+          const isOpen = panel.classList.contains("hidden") === false;
+          panel.classList.toggle("hidden");
+          toggle.setAttribute("aria-expanded", String(!isOpen));
+        });
+      }
+    </script>
+
+    <style is:global>
+      :root {
+        --midnight: #010310;
+        --slate: #0b0f19;
+        --neon: #23a9bd;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--neon);
+        outline-offset: 2px;
+      }
+    </style>
+  </body>
+</html>

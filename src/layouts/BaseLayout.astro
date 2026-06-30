@@ -1,0 +1,145 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description = "Leonida Hub — GTA VI news, collectible tracker, guides, and deals. Your authority on Vice City and the state of Leonida.",
+  ogImage = "/og-default.png",
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+const siteName = "Leonida Hub";
+const fullTitle = title === siteName ? title : `${title} — ${siteName}`;
+---
+
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#010310" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Primary meta -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts: Barlow Condensed (display) + Inter (body) + JetBrains Mono (data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style is:global>
+      /* ── Reset ──────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ── Root tokens ────────────────────────────────────────── */
+      :root {
+        --midnight: #010310;
+        --midnight-50: #0a0e1f;
+        --midnight-100: #0d1128;
+        --midnight-200: #111630;
+        --neon: #23a9bd;
+        --neon-dim: #1a7f90;
+        --neon-bright: #2ec8df;
+        --neon-glow: rgba(35, 169, 189, 0.15);
+        --neon-border: rgba(35, 169, 189, 0.25);
+        --text-primary: #f0f4f8;
+        --text-secondary: #8a9bb0;
+        --text-muted: #4a5568;
+        --border-subtle: rgba(255, 255, 255, 0.06);
+        --border-neon: rgba(35, 169, 189, 0.2);
+        --radius-sm: 4px;
+        --radius: 8px;
+        --radius-lg: 12px;
+      }
+
+      /* ── Base ───────────────────────────────────────────────── */
+      html {
+        background-color: var(--midnight);
+        color: var(--text-primary);
+        font-family: "Inter", system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        min-height: 100dvh;
+        background-color: var(--midnight);
+        overflow-x: hidden;
+      }
+
+      /* ── Focus visible ──────────────────────────────────────── */
+      :focus-visible {
+        outline: 2px solid var(--neon);
+        outline-offset: 3px;
+        border-radius: var(--radius-sm);
+      }
+
+      /* ── Selection ──────────────────────────────────────────── */
+      ::selection {
+        background: rgba(35, 169, 189, 0.3);
+        color: #fff;
+      }
+
+      /* ── Scrollbar ──────────────────────────────────────────── */
+      ::-webkit-scrollbar {
+        width: 6px;
+        background: var(--midnight);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--midnight-200);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--neon-dim);
+      }
+
+      /* ── Reduced motion ─────────────────────────────────────── */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
